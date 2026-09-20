@@ -1,0 +1,4 @@
+spec_version: "0.1.0"
+name: repomedic
+version: "0.1.0"
+description: A portable AI agent that diagnoses software project problems and produces explainable repair plans.
