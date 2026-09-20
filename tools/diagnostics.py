@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tools.repository_scanner import scan_repository
 from tools.error_checker import check_error_logs
+from tools.dependency_checker import check_dependencies
 
 
 def check_package_file(path, files):
@@ -63,7 +64,8 @@ def run_diagnostics(path):
     checks = [
         check_package_file,
         check_start_script,
-        check_error_logs
+        check_error_logs,
+        check_dependencies
     ]
 
     for check in checks:
