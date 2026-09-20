@@ -14,9 +14,12 @@ sys.path.append(
 )
 
 from agent import RepoMedic
+from adapters.base import AdapterContract
 
 
-class OpenAIAdapter:
+class OpenAIAdapter(AdapterContract):
+    framework = "openai"
+
     def __init__(self):
         self.agent = RepoMedic()
         self.client = None
@@ -35,7 +38,7 @@ class OpenAIAdapter:
         result_data = result.to_dict()
 
         if self.client is None:
-            result_data["framework"] = "openai"
+            result_data["framework"] = self.framework
             result_data["mode"] = "local"
             return result_data
 
@@ -65,7 +68,7 @@ Do not invent evidence that is not present in the diagnosis.
             input=prompt
         )
 
-        result["framework"] = "openai"
+        result["framework"] = self.framework
         result["mode"] = "openai"
         result["explanation"] = response.output_text
 
@@ -80,3 +83,6 @@ if __name__ == "__main__":
     print("RepoMedic OpenAI Adapter")
     print("========================")
     print(result)
+
+    print("\nPassport Verification:")
+    print(adapter.verify("tests/broken_project"))
