@@ -5,6 +5,7 @@ import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tools.repository_scanner import scan_repository
+from tools.error_checker import check_error_logs
 
 
 def check_package_file(path, files):
@@ -61,7 +62,8 @@ def run_diagnostics(path):
 
     checks = [
         check_package_file,
-        check_start_script
+        check_start_script,
+        check_error_logs
     ]
 
     for check in checks:
