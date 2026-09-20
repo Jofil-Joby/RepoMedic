@@ -1,11 +1,11 @@
-# Decision
+## Decision and Reasoning
 
-RepoMedic decides on a diagnosis by analyzing project files, dependencies, configuration, and available error information. It uses the observed evidence to identify likely causes and explain how the diagnosis was reached.
+RepoMedic makes a diagnosis by analyzing the observed project evidence and identifying the most likely software problem. It decides by connecting detected problems to supporting evidence, possible causes, and practical repair actions.
 
-# Inputs
+## Inputs and Data Sources
 
-RepoMedic uses information from the software project being inspected, including source files, dependency files, configuration files, project structure, and error or log information when available.
+RepoMedic uses input data from the software project being inspected, including source files, dependency files, configuration files, project structure, and available error or log information. These project files and diagnostic outputs provide the data used to determine the diagnosis.
 
-# Limits
+## Limits and Constraints
 
-RepoMedic may not identify the correct cause when required project information is missing or inaccessible. Its diagnosis can also be uncertain when the available evidence supports multiple possible causes.
+RepoMedic has limitations when required project information is missing, inaccessible, or incomplete. The diagnosis may remain uncertain when the available evidence supports multiple possible causes or does not provide enough information to confirm one cause.
