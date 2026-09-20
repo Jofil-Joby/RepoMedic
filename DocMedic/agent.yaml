@@ -1,0 +1,4 @@
+spec_version: "0.1.0"
+name: docmedic
+version: "0.1.0"
+description: A portable AI agent that analyzes software documentation and produces an explainable improvement plan.
