@@ -2,6 +2,7 @@ import os
 
 from tools.repository_scanner import scan_repository, detect_project_type
 from tools.diagnosis_engine import generate_repair_plan
+from core.result import DiagnosisResult
 
 
 class RepoMedic:
@@ -17,12 +18,10 @@ class RepoMedic:
         project_types = detect_project_type(repository["files"])
         diagnosis = generate_repair_plan(path)
 
-        return {
-            "project_types": project_types,
-            "files": repository["files"],
-            "directories": repository["directories"],
-            "diagnosis": diagnosis
-        }
+        return DiagnosisResult(
+            project_types,
+            diagnosis
+        )
 
 
 if __name__ == "__main__":
@@ -34,15 +33,18 @@ if __name__ == "__main__":
     print("================")
 
     print("\nProject Type:")
-    for project_type in result["project_types"]:
+    for project_type in result.project_types:
         print(f"  {project_type}")
 
-    print("\nDiagnosis:")
-    print(f"  Status: {result['diagnosis']['status']}")
+    print("\nSummary:")
+    print(f"  {result.summary()}")
 
-    if "findings" in result["diagnosis"]:
+    print("\nDiagnosis:")
+    print(f"  Status: {result.diagnosis['status']}")
+
+    if "findings" in result.diagnosis:
         for number, finding in enumerate(
-            result["diagnosis"]["findings"],
+            result.diagnosis["findings"],
             start=1
         ):
             print(f"\n  Problem {number}")
