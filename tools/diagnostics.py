@@ -7,8 +7,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools.repository_scanner import scan_repository
 
 
-def check_package_file(files):
-    has_package = any(file.endswith("package.json") for file in files)
+def check_package_file(path, files):
+    has_package = any(
+        os.path.basename(file) == "package.json"
+        for file in files
+    )
 
     if not has_package:
         return {
@@ -52,39 +55,36 @@ def check_start_script(path, files):
     return None
 
 
-def diagnose(path):
+def run_diagnostics(path):
     result = scan_repository(path)
+    findings = []
 
-    diagnosis = check_package_file(result["files"])
+    checks = [
+        check_package_file,
+        check_start_script
+    ]
 
-    if diagnosis:
-        return diagnosis
+    for check in checks:
+        finding = check(path, result["files"])
 
-    diagnosis = check_start_script(path, result["files"])
+        if finding:
+            findings.append(finding)
 
-    if diagnosis:
-        return diagnosis
-
-    return None
+    return findings
 
 
 if __name__ == "__main__":
-    diagnosis = diagnose(".")
+    findings = run_diagnostics(".")
 
-    if diagnosis:
-        print("Problem:")
-        print(f"  {diagnosis['problem']}")
+    if findings:
+        print("Problems detected:")
 
-        print("\nCause:")
-        print(f"  {diagnosis['cause']}")
-
-        print("\nEvidence:")
-        print(f"  {diagnosis['evidence']}")
-
-        print("\nSuggested Fix:")
-        print(f"  {diagnosis['suggested_fix']}")
-
-        print("\nConfidence:")
-        print(f"  {diagnosis['confidence']}")
+        for number, finding in enumerate(findings, start=1):
+            print(f"\nProblem {number}:")
+            print(f"  Problem: {finding['problem']}")
+            print(f"  Cause: {finding['cause']}")
+            print(f"  Evidence: {finding['evidence']}")
+            print(f"  Suggested Fix: {finding['suggested_fix']}")
+            print(f"  Confidence: {finding['confidence']}")
     else:
         print("No problems detected.")
